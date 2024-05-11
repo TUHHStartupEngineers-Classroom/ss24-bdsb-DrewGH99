@@ -11,7 +11,7 @@
     "href": "index.html#how-to-use",
     "title": "My Lab Journal",
     "section": "How to use",
-    "text": "How to use\n\nAccept the assignment and get your own github repo.\nBlog/journal what you are doing in R, by editing the .qmd files.\nSee the links page for lots of helpful links on learning R.\nChange everything to make it your own.\nMake sure to render you website everytime before you want to upload changes"
+    "text": "How to use\n\nAccept the assignment and get your own github repo.\nBlog/journal what you are doing in R, by editing the .qmd files.\nSee the links page for lots of helpful links on learning R.\nChange everything to make it your own.\nMake sure to render you website everytime before you want to upload changes\n\nabout"
   },
   {
     "objectID": "content/02_notes/05_class_notes.html",
@@ -32,14 +32,14 @@
     "href": "content/01_journal/01_tidyverse.html",
     "title": "Tidyverse",
     "section": "",
-    "text": "Note\n\n\n\nYou can delete everything in here and start fresh.\nThis is a .qmd file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "#Intro Challenge 1 ----\n\nlibrary(tidyverse)\nlibrary(here)\nlibrary(\"magrittr\")\nlibrary(readxl)\nlibrary(readr)\n\n#The following code up to line 68 comes from the content from 'intro to the tidyverse' material. \n\nbikes_tbl      &lt;- read_excel(here(\"00_data/01_raw_data/01_bike_sales/01_raw_data/bikes.xlsx\"), .name_repair = \"unique_quiet\")\norderlines_tbl &lt;- read_excel(here(\"00_data/01_raw_data/01_bike_sales/01_raw_data/orderlines.xlsx\"), .name_repair = \"unique_quiet\")\nbikeshops_tbl  &lt;- read_excel(here(\"00_data/01_raw_data/01_bike_sales/01_raw_data/bikeshops.xlsx\"), .name_repair = \"unique_quiet\")\n\n# Chaining commands with the pipe and assigning it to order_items_joined_tbl\nbike_orderlines_joined_tbl &lt;- orderlines_tbl %&gt;%\n  left_join(bikes_tbl, by = c(\"product.id\" = \"bike.id\")) %&gt;%\n  left_join(bikeshops_tbl, by = c(\"customer.id\" = \"bikeshop.id\"))\n\nbike_orderlines_wrangled_tbl &lt;- bike_orderlines_joined_tbl %&gt;%\n  # 5.1 Separate category name\n  separate(col    = category,\n           into   = c(\"category.1\", \"category.2\", \"category.3\"),\n           sep    = \" - \") %&gt;%\n  \n  # 5.2 Add the total price (price * quantity) \n  # Add a column to a tibble that uses a formula-style calculation of other columns\n  mutate(total.price = price * quantity) %&gt;%\n  \n  # 5.3 Optional: Reorganize. Using select to grab or remove unnecessary columns\n  # 5.3.1 by exact column name\n  select(-...1, -gender) %&gt;%\n  \n  # 5.3.2 by a pattern\n  # You can use the select_helpers to define patterns. \n  # Type ?ends_with and click on Select helpers in the documentation\n  select(-ends_with(\".id\")) %&gt;%\n  \n  # 5.3.3 Actually we need the column \"order.id\". Let's bind it back to the data\n  bind_cols(bike_orderlines_joined_tbl %&gt;% select(order.id)) %&gt;% \n  \n  # 5.3.4 You can reorder the data by selecting the columns in your desired order.\n  # You can use select_helpers like contains() or everything()\n  select(order.id, contains(\"order\"), contains(\"model\"), contains(\"category\"),\n         price, quantity, total.price,\n         everything()) %&gt;%\n  \n  # 5.4 Rename columns because we actually wanted underscores instead of the dots\n  # (one at the time vs. multiple at once)\n  rename(bikeshop = name) %&gt;%\n  set_names(names(.) %&gt;% str_replace_all(\"\\\\.\", \"_\"))\n\n\n\n#create variable for table\nsales_by_location_tbl &lt;- bike_orderlines_wrangled_tbl %&gt;%\n  \n  # separate state and city variables into different columns\n  separate(col   = location,\n           into  = c(\"city\", \"state\"),\n           sep   = \", \") %&gt;%\n \n  #select columns\n  select(state, city, total_price) %&gt;%\n  \n  #Group data by state and sum price data into the 'sales' variable\n    group_by(state) %&gt;% \n      summarize(sales = sum(total_price)) %&gt;%\n\n  \n#add column that formats sales data as a currency\n  mutate(sales_text = scales::dollar(sales, big.mark = \".\", \n                                   decimal.mark = \",\", \n                                   prefix = \"\", \n                                   suffix = \" €\"))%&gt;% \n\n\n  #Create canvas with x-axis and y-axis values\n  ggplot(aes(x = state, y = sales)) +\n  \n  #Create bar plot with color fill\n  geom_col(fill = \"#9EB6F3\") + \n  \n  #Add labels to bars\n  geom_label(aes(label = sales_text)) + \n  \n  #Scale y-axis\n  scale_y_continuous(labels = scales::dollar_format(big.mark = \".\", \n                                                    decimal.mark = \",\", \n                                                    prefix = \"\", \n                                                    suffix = \" €\")) +\n  \n  #Modify labels and plot title\n  labs(\n    title    = \"Revenue by Location\",\n    subtitle = \"\",\n    x = \"State\", \n    y = \"Revenue\"\n  ) +\n\n  #rotate axis labels\n  theme(axis.text.x = element_text(angle = 45, hjust = 1))\n\n#intro challenge 2 ----\n\n#create variable for table\nsales_by_location_and_year_tbl &lt;- bike_orderlines_wrangled_tbl %&gt;%\n  \n  # separate state and city\n  separate(col   = location,\n           into  = c(\"city\", \"state\"),\n           sep   = \", \") %&gt;%\n  \n  select(state, city, total_price, order_date) %&gt;% ##select columns\n  mutate(year = year(order_date)) %&gt;% #add column for the year that takes the year value from the order date\n  group_by(year, state) %&gt;% #group by year and state\n  summarize(sales = sum(total_price), .groups = 'drop') %&gt;% #sum sales for each year and state\n  ungroup() %&gt;% #ungroup\n\n    mutate(sales_text = scales::dollar(sales, big.mark = \".\", #add column that formats sales data as a currency\n                                       decimal.mark = \",\", \n                                       prefix = \"\", \n                                       suffix = \" €\")) %&gt;%\n  \n  ggplot(aes(x = year, y = sales, fill = state)) + #Create canvas with x-axis, y-axis, and fill values\n  \n  geom_col() + #create bar plot\n  \n  geom_smooth(method = \"lm\", se = FALSE) + # Add a trendline\n  \n  facet_wrap(~ state) + #use face wrap to display multiple plots based on state\n  \n  scale_y_continuous(labels = scales::dollar_format(big.mark = \".\",    ##Scale y-axis\n                                                    decimal.mark = \",\", \n                                                    prefix = \"\", \n                                                    suffix = \" €\")) +\n  labs(\n    title = \"Sales by year and location\",\n    subtitle = \"\",\n    fill = \"Location\"\n  )\n\n\n\nsales_by_location_tbl\n\n\n\n\n\n\n\n\nThe state with the highest revenue is North Rhine-Westphalia.\n\nsales_by_location_and_year_tbl\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nYou can delete everything in here and start fresh.\n\n\nThis is a .qmd file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
   },
   {
     "objectID": "content/01_journal/01_tidyverse.html#header-2",
     "href": "content/01_journal/01_tidyverse.html#header-2",
     "title": "Tidyverse",
-    "section": "2.1 Header 2",
-    "text": "2.1 Header 2\n\nHeader 3\n\nHeader 4\n\nHeader 5\n\nHeader 6"
+    "section": "\n3.1 Header 2",
+    "text": "3.1 Header 2\nHeader 3\nHeader 4\nHeader 5\nHeader 6"
   },
   {
     "objectID": "content/01_journal/02_data_acquisition.html",
@@ -75,5 +75,33 @@
     "title": "Links",
     "section": "",
     "text": "Google is great, Google your problem\nStackoverflow is great, google will often take you there because someone has already asked your question, and someone else has answered, usually many people have answered your question many ways."
+  },
+  {
+    "objectID": "content/01_journal/01_tidyverse.html#challenge-2",
+    "href": "content/01_journal/01_tidyverse.html#challenge-2",
+    "title": "Tidyverse",
+    "section": "\n0.2 Challenge 2",
+    "text": "0.2 Challenge 2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nYou can delete everything in here and start fresh.\n\n\nThis is a .qmd file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
+    "objectID": "content/01_journal/01_tidyverse.html#challenge-1",
+    "href": "content/01_journal/01_tidyverse.html#challenge-1",
+    "title": "Tidyverse",
+    "section": "\n0.1 Challenge 1",
+    "text": "0.1 Challenge 1"
+  },
+  {
+    "objectID": "content/01_journal/01_tidyverse.html#challenge-1-result",
+    "href": "content/01_journal/01_tidyverse.html#challenge-1-result",
+    "title": "Tidyverse",
+    "section": "",
+    "text": "sales_by_location_tbl"
+  },
+  {
+    "objectID": "content/01_journal/01_tidyverse.html#challenge-2-result",
+    "href": "content/01_journal/01_tidyverse.html#challenge-2-result",
+    "title": "Tidyverse",
+    "section": "",
+    "text": "The state with the highest revenue is North Rhine-Westphalia.\n\nsales_by_location_and_year_tbl\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nYou can delete everything in here and start fresh.\n\n\nThis is a .qmd file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
   }
 ]
