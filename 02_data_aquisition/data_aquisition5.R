@@ -1,52 +1,9 @@
----
-title: "Data Acquisition"
-author: "Drew Gilmore"
----
 
-# Challenge 1
-```{r plot, echo = T }
-library(knitr)
-library(httr)
-library(tidyverse)
-library(jsonlite)
-library(DBI)
-
-#query API
-resp_cb <- GET("http://api.citybik.es/v2/networks/stadtrad-hamburg")
-
-#format data
-station_data <- resp_cb %>% 
-  .$content %>% 
-  rawToChar() %>% 
-  fromJSON()
-
-#create table and filter data
-bike_list <- station_data[["network"]][["stations"]]
-bike_list_tbl <- as_tibble(bike_list)
-
-#filter data further
-canyon_bike_list <- bike_list_tbl %>%
-  select(name, free_bikes, timestamp, latitude, longitude)
-  
-
-#create and query database
-mydb <- dbConnect(RSQLite::SQLite(), "my-db.sqlite")
-#dbWriteTable(mydb, "canyon_bike_list", canyon_bike_list)
-canyon_bike_list_db <- dbGetQuery(mydb, 'SELECT * FROM canyon_bike_list LIMIT 10')
-dbDisconnect(mydb)
-
-#plot
-kable(canyon_bike_list_db, caption = "StadtRAD Hamburg Bike Availability" )
-```
-
-# Challenge 2
-```{r plot2, echo = T }
 library(rvest)
 library(tidyverse)
 library(purrr)
 library(xopen)
 library(knitr)
-library(DBI)
 
 url_home        <- "https://www.rosebikes.com"
 html_home <- read_html(url_home)
@@ -61,7 +18,7 @@ bike_categories_chr2  <- html_home %>%
 site_main_urls <- bike_categories_chr2 |> str_c("https://www.rosebikes.com", ... = _)
 
 #access url for bikes
-site_category_url <- site_main_urls[1]
+site_category_url <- site_maine_urls[1]
 site_category_html <- read_html(site_category_url)
 
 #scrape bike types
@@ -101,17 +58,7 @@ model_price  <- site_sub_subcategory_html %>%
   str_remove("from €")
 
 #make tibble and plot
-rose_bike_data <- tibble(model   = model_name,
-                    price = model_price)
-
-#query database
-mydb <- dbConnect(RSQLite::SQLite(), "my-db.sqlite")
-#dbWriteTable(mydb, "rose_bike_data", rose_bike_data)
-rose_bike_data_db <- dbGetQuery(mydb, 'SELECT * FROM rose_bike_data')
-dbDisconnect(mydb)
-
-#plot
-kable(rose_bike_data_db, caption = "Rose Bikes Endurance Model Pricing" )
-```
-Rose endurance road bikes have comparable pricing to the endurance road bikes from Canyon. However, Canyon has a larger inventory of endurance bikes with a higher price range.
+bike_data <- tibble(model   = model_name,
+                    price = model_price) %>%
+  kable(caption = "Rose Bikes Endurance Model Pricing" )
 

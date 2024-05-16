@@ -1,0 +1,28 @@
+
+Models
+
+bike_categories_chr <- html_home %>%
+  
+  html_elements("h4")
+ html_text()
+
+Prices
+
+> bike_categories_chr2  <- html_home %>%
++     html_elements(".catalog-category-bikes__price-title") %>%
++ html_text2()
+
+_________________________________________________________________
+
+
+
+Get Bike Categories
+
+
+> bike_categories_chr2  <- html_home |>
++     html_element("main-navigation.header-main-navigation__main-navigation")
+
+bike_categories_chr2 %>%      html_elements("a")%>% html_attr("href")
+
+#Bikes
+
