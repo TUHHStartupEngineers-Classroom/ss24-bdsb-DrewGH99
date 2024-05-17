@@ -1,8 +1,147 @@
 ---
 title: "Data Wrangling"
-author: "Joschka Schwarz"
+author: "Drew Gilmore"
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
-:::
+# Challenge 1 
+Alternative 2 [reduced data]
+```{r plot, echo = T , warning=FALSE, error=FALSE}
+
+# Challenge 1 ----
+
+library(data.table)
+library(here)
+library(vroom)
+library(tidyverse)
+library(knitr)
+
+col_types <- list(
+  id = col_character(),
+  type = col_character(),
+  number = col_character(),
+  country = col_character(),
+  date = col_date("%Y-%m-%d"),
+  abstract = col_character(),
+  title = col_character(),
+  kind = col_character(),
+  num_claims = col_double(),
+  filename = col_character(),
+  withdrawn = col_double(),
+  patent_id = col_character(),
+  assignee_id = col_character()
+  
+)
+
+patent_data <- vroom(
+  file       = here("03_data_wrangling/Patent_data_reduced/patent.tsv"), 
+  delim      = "\t", 
+  col_types  = col_types,
+  na         = c("", "NA", "NULL")
+)
+
+assignee_data <- vroom(
+  file       = here("03_data_wrangling/Patent_data_reduced/assignee.tsv"), 
+  delim      = "\t", 
+  col_types  = col_types,
+  na         = c("", "NA", "NULL")
+)
+
+patent_assignee_data <- vroom(
+  file       = here("03_data_wrangling/Patent_data_reduced/patent_assignee.tsv"), 
+  delim      = "\t", 
+  col_types  = col_types,
+  na         = c("", "NA", "NULL")
+)
+
+uspc_data <- vroom(
+  file       = here("03_data_wrangling/Patent_data_reduced/uspc.tsv"), 
+  delim      = "\t", 
+  col_types  = col_types,
+  na         = c("", "NA", "NULL")
+)
+
+patent_tbl <- setDT(patent_data)
+assignee_tbl <- setDT(assignee_data)
+patent_assignee_tbl <- setDT(patent_assignee_data)
+uspc_tbl <- setDT(uspc_data)
+
+#change column names to distinguish data
+
+setnames(patent_tbl, "id", "patent_id")
+setnames(assignee_tbl, "id", "assignee_id")
+
+#merge data
+patents_orgs_tbl <- merge(patent_assignee_tbl, assignee_tbl, by='assignee_id', all = T)
+
+#sort based on assignee type
+#retrieve the number of rows that each organization appears in the table
+num_patents <- patents_orgs_tbl[type == "2", .N, by = organization]
+
+#sort descending number of patents
+num_patents <- num_patents[order(-rank(N))]
+
+setnames(num_patents, "N", "number of patents")
+
+kable(head(num_patents, n = 10), caption = "Top 10 US Companies With The Most New Granted Patents For 2014")
+
+```
+
+# Challenge 2
+Alternative 2 [reduced data]
+```{r plot2, echo = T , warning=FALSE, error=FALSE}
+
+# Challenge 2 ----
+
+#merge data
+patents_orgs_tbl_2 <- merge(patents_orgs_tbl, patent_tbl, by='patent_id', all = T)
+
+#filter based on US companies
+num_patents_aug <- patents_orgs_tbl_2[type == "2" & lubridate::month(date) == "8", .N, by = organization]
+
+#sort
+num_patents_aug <- num_patents_aug[order(-rank(N))]
+
+
+setnames(num_patents_aug, "N", "number of patents (Aug, 2014)")
+
+kable(head(num_patents_aug, n = 10), caption = "Top 10 US Companies With The Most New Granted Patents For August 2014")
+
+```
+
+# Challenge 3 
+Alternative 2 [reduced data]
+```{r plot3, echo = T , warning=FALSE, error=FALSE}
+
+
+# Challenge 3 ----
+
+
+#join data
+patents_orgs_tbl_3 <- merge(patents_orgs_tbl_2, uspc_tbl, by='patent_id', all = T)
+
+#sort by worldwide companies and number of patents
+patents_orgs_tbl_4 <- patents_orgs_tbl_3[type == "2" | type == "3", .N, by=organization]
+
+#sort descending
+patents_orgs_tbl_5 <- patents_orgs_tbl_4[order(-rank(N))]
+
+#top 10
+patents_orgs_tbl_6 <- head(patents_orgs_tbl_5, n = 10)
+
+#create variable of names to filter by
+top_ten <- patents_orgs_tbl_6[,organization]
+
+#filter by names and exclude NA
+patents_orgs_tbl_7 <- patents_orgs_tbl_3[organization %in% c(top_ten) & !is.na(mainclass_id), .N, by = mainclass_id]
+
+#sort
+patents_orgs_tbl_8 <- patents_orgs_tbl_7[order(-rank(N))]
+
+setnames(patents_orgs_tbl_8, "N", "number of patents (2014)")
+
+kable(head(patents_orgs_tbl_8, n = 5), caption = "Top 5 USPTO Tech Main Classes (excluding NA) of the Top 10 Worldwide Companies With the Most New Granted Patents for August 2014")
+
+```
+
+
+
