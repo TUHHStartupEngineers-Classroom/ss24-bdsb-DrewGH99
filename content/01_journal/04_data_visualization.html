@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.450">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-<meta name="author" content="Joschka Schwarz">
-
+<meta name="author" content="Drew Gilmore">
 <title>MyLabJournal - Data Visualization</title>
 <style>
 code{white-space: pre-wrap;}
@@ -21,8 +18,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
-
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
@@ -43,7 +73,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script id="quarto-search-options" type="application/json">{
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -62,17 +94,13 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-
+}</script><link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 </head>
-
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">MyLabJournal</span>
@@ -84,7 +112,7 @@ ul.task-list li input[type="checkbox"] {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
@@ -92,8 +120,8 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-journal" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
  <span class="menu-text">Journal</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-journal">    
-        <li>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-journal">
+<li>
     <a class="dropdown-item" href="../../content/01_journal/01_tidyverse.html" rel="" target="">
  <span class="dropdown-text">01 Tidyverse</span></a>
   </li>  
@@ -110,7 +138,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">04 Data Visualization</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item">
     <a class="nav-link" href="../../content/02_notes/05_class_notes.html" rel="" target="">
  <span class="menu-text">Class notes</span></a>
@@ -120,25 +148,24 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Links</span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools ms-auto">
+<div class="quarto-navbar-tools ms-auto">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Contents</h2>
+   
+  <ul class="collapse">
+<li><a href="#challenge-1" id="toc-challenge-1" class="nav-link active" data-scroll-target="#challenge-1"><span class="header-section-number">1</span> Challenge 1</a></li>
+  <li><a href="#challenge-2" id="toc-challenge-2" class="nav-link" data-scroll-target="#challenge-2"><span class="header-section-number">2</span> Challenge 2</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Data Visualization</h1>
 </div>
 
@@ -149,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Joschka Schwarz </p>
+             <p>Drew Gilmore </p>
           </div>
   </div>
     
@@ -158,26 +185,110 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
-</header>
+</header><section id="challenge-1" class="level1" data-number="1"><h1 data-number="1">
+<span class="header-section-number">1</span> Challenge 1</h1>
+<div class="cell" data-hash="04_data_visualization_cache/html/unnamed-chunk-1_4a79bdb428511d12979167801b8b7758">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-8"><a href="#cb1-8"></a>covid_data_tbl <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://covid.ourworldindata.org/data/owid-covid-data.csv"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co">#create location vector</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>location_levels <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb1-12"><a href="#cb1-12"></a>  <span class="st">"Germany"</span>, <span class="st">"Spain"</span>, <span class="st">"France"</span>, </span>
+<span id="cb1-13"><a href="#cb1-13"></a>  <span class="st">"United Kingdom"</span>, <span class="st">"United States"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14"></a></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="co">#filter by locations</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a>covid_data_tbl_2 <span class="ot">&lt;-</span> covid_data_tbl <span class="sc">%&gt;%</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a> <span class="fu">filter</span>(location <span class="sc">%in%</span> location_levels) </span>
+<span id="cb1-18"><a href="#cb1-18"></a></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="co">#determine max number of cases in USA to display</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a>max_cases_us <span class="ot">&lt;-</span> covid_data_tbl_2 <span class="sc">%&gt;%</span></span>
+<span id="cb1-21"><a href="#cb1-21"></a>  <span class="fu">filter</span>(location <span class="sc">==</span> <span class="st">"United States"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_cases)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-23"><a href="#cb1-23"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb1-24"><a href="#cb1-24"></a></span>
+<span id="cb1-25"><a href="#cb1-25"></a></span>
+<span id="cb1-26"><a href="#cb1-26"></a>plot_cases_by_country <span class="ot">&lt;-</span> covid_data_tbl_2 <span class="sc">%&gt;%</span> </span>
+<span id="cb1-27"><a href="#cb1-27"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(date, total_cases, <span class="at">color =</span> location)) <span class="sc">+</span></span>
+<span id="cb1-28"><a href="#cb1-28"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">span =</span> <span class="fl">0.2</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb1-29"><a href="#cb1-29"></a>  <span class="fu">scale_x_date</span>(<span class="at">name =</span> <span class="cn">NULL</span>, <span class="at">date_breaks =</span> <span class="st">"1 year"</span>, <span class="at">date_labels =</span> <span class="st">"%Y"</span>) <span class="sc">+</span></span>
+<span id="cb1-30"><a href="#cb1-30"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Cumulative Cases"</span>, <span class="at">labels =</span> comma) <span class="sc">+</span></span>
+<span id="cb1-31"><a href="#cb1-31"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"YlOrBr"</span>) <span class="sc">+</span></span>
+<span id="cb1-32"><a href="#cb1-32"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb1-33"><a href="#cb1-33"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>) <span class="sc">+</span></span>
+<span id="cb1-34"><a href="#cb1-34"></a>  <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">"Country"</span>, <span class="at">title =</span> <span class="st">"Cumulative COVID-19 Cases Over Time"</span>,</span>
+<span id="cb1-35"><a href="#cb1-35"></a>       <span class="at">subtitle =</span> <span class="st">"Data for Germany, Spain, France, United Kingdom, and United States"</span>) <span class="sc">+</span></span>
+<span id="cb1-36"><a href="#cb1-36"></a>  <span class="fu">geom_label</span>(<span class="at">data =</span> max_cases_us, <span class="at">label =</span> <span class="st">"103,436,829"</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>, <span class="at">vjust =</span> <span class="sc">-</span>.<span class="dv">1</span>)</span>
+<span id="cb1-37"><a href="#cb1-37"></a></span>
+<span id="cb1-38"><a href="#cb1-38"></a><span class="fu">plot</span>(plot_cases_by_country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="04_data_visualization_files/figure-html/unnamed-chunk-1-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="04_data_visualization_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="challenge-2" class="level1" data-number="2"><h1 data-number="2">
+<span class="header-section-number">2</span> Challenge 2</h1>
+<div class="cell" data-hash="04_data_visualization_cache/html/plot_c305b7ddd6a34c3d6342a9280b0fd357">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">library</span>(maps)</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># Read data</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>covid_data_tbl <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://covid.ourworldindata.org/data/owid-covid-data.csv"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co"># Data manipulation</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>covid_data_tbl_3 <span class="ot">&lt;-</span> covid_data_tbl <span class="sc">%&gt;%</span> </span>
+<span id="cb2-9"><a href="#cb2-9"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(continent)) <span class="sc">%&gt;%</span> <span class="co">#filter to only include countries</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>  <span class="fu">group_by</span>(location) <span class="sc">%&gt;%</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>  <span class="fu">summarize</span>(<span class="at">mortality_rate =</span> <span class="fu">max</span>((total_deaths <span class="sc">/</span> population), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> <span class="co">#calculate mortality rate</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>  <span class="fu">mutate</span>(<span class="at">location =</span> <span class="fu">case_when</span>(</span>
+<span id="cb2-14"><a href="#cb2-14"></a>    location <span class="sc">==</span> <span class="st">"United Kingdom"</span> <span class="sc">~</span> <span class="st">"UK"</span>,</span>
+<span id="cb2-15"><a href="#cb2-15"></a>    location <span class="sc">==</span> <span class="st">"United States"</span> <span class="sc">~</span> <span class="st">"USA"</span>,</span>
+<span id="cb2-16"><a href="#cb2-16"></a>    location <span class="sc">==</span> <span class="st">"Democratic Republic of Congo"</span> <span class="sc">~</span> <span class="st">"Democratic Republic of the Congo"</span>,</span>
+<span id="cb2-17"><a href="#cb2-17"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> location</span>
+<span id="cb2-18"><a href="#cb2-18"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>  <span class="fu">distinct</span>()</span>
+<span id="cb2-20"><a href="#cb2-20"></a></span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="co"># World map data</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a>world <span class="ot">&lt;-</span> <span class="fu">map_data</span>(<span class="st">"world"</span>)</span>
+<span id="cb2-23"><a href="#cb2-23"></a></span>
+<span id="cb2-24"><a href="#cb2-24"></a><span class="co"># Merge data, re-order column names</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a>World_covid <span class="ot">&lt;-</span> <span class="fu">merge</span>(covid_data_tbl_3, world, <span class="at">by.x =</span> <span class="st">"location"</span>, <span class="at">by.y =</span> <span class="st">"region"</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a>  <span class="fu">select</span>(long, lat, group, order, location, subregion, mortality_rate) <span class="sc">%&gt;%</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a>  <span class="fu">arrange</span>(order)</span>
+<span id="cb2-28"><a href="#cb2-28"></a></span>
+<span id="cb2-29"><a href="#cb2-29"></a><span class="co"># adjusting column names</span></span>
+<span id="cb2-30"><a href="#cb2-30"></a><span class="fu">colnames</span>(World_covid) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"long"</span>, <span class="st">"lat"</span>, <span class="st">"group"</span>, <span class="st">"order"</span>, <span class="st">"id"</span>, <span class="st">"subregion"</span>, <span class="st">"mortality_rate"</span>)</span>
+<span id="cb2-31"><a href="#cb2-31"></a></span>
+<span id="cb2-32"><a href="#cb2-32"></a><span class="co"># Plotting</span></span>
+<span id="cb2-33"><a href="#cb2-33"></a>gg <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(World_covid)</span>
+<span id="cb2-34"><a href="#cb2-34"></a>gg <span class="ot">&lt;-</span> gg <span class="sc">+</span> <span class="fu">geom_map</span>(<span class="at">data =</span> world, <span class="at">map =</span> world, <span class="fu">aes</span>(<span class="at">map_id =</span> region), </span>
+<span id="cb2-35"><a href="#cb2-35"></a>                    <span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">color =</span> <span class="st">"#7f7f7f"</span>, <span class="at">size =</span> <span class="fl">0.25</span>)</span>
+<span id="cb2-36"><a href="#cb2-36"></a>gg <span class="ot">&lt;-</span> gg <span class="sc">+</span> <span class="fu">geom_map</span>(<span class="at">map =</span> World_covid, <span class="fu">aes</span>(<span class="at">map_id =</span> id, <span class="at">fill =</span> mortality_rate), <span class="at">size =</span> <span class="fl">0.25</span>)</span>
+<span id="cb2-37"><a href="#cb2-37"></a>gg <span class="ot">&lt;-</span> gg <span class="sc">+</span> <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"red"</span>, <span class="at">high =</span> <span class="st">"black"</span>, <span class="at">name =</span> <span class="st">"Mortality Rate"</span>)</span>
+<span id="cb2-38"><a href="#cb2-38"></a>gg <span class="ot">&lt;-</span> gg <span class="sc">+</span> <span class="fu">expand_limits</span>(<span class="at">x =</span> World_covid<span class="sc">$</span>long, <span class="at">y =</span> World_covid<span class="sc">$</span>lat)</span>
+<span id="cb2-39"><a href="#cb2-39"></a>gg <span class="ot">&lt;-</span> gg <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">""</span>, <span class="at">title =</span> <span class="st">"Covid Mortality Rate by country"</span>)</span>
+<span id="cb2-40"><a href="#cb2-40"></a>gg <span class="ot">&lt;-</span> gg <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>(), <span class="at">panel.border =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb2-41"><a href="#cb2-41"></a>gg <span class="ot">&lt;-</span> gg <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(), <span class="at">axis.text =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb2-42"><a href="#cb2-42"></a>gg <span class="ot">&lt;-</span> gg <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb2-43"><a href="#cb2-43"></a>gg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="04_data_visualization_files/figure-html/plot-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="04_data_visualization_files/figure-html/plot-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
 
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>You can delete everything in here and start fresh.</p>
-</div>
-</div>
 
-
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -526,7 +637,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-
+<script>var lightboxQuarto = GLightbox({"loop":true,"openEffect":"zoom","selector":".lightbox","closeEffect":"zoom","descPosition":"bottom"});</script>
 
 
 </body></html>
