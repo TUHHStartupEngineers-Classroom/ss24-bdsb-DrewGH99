@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
-
+<meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-<meta name="author" content="Joschka Schwarz">
-
+<meta name="author" content="Drew Gilmore">
 <title>MyLabJournal - Data Wrangling</title>
 <style>
 code{white-space: pre-wrap;}
@@ -18,11 +15,44 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
-
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
@@ -42,8 +72,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -59,85 +88,82 @@ ul.task-list li input[type="checkbox"] {
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
-}</script>
-
-
+}</script><link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 </head>
-
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">MyLabJournal</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../../index.html">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-journal" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-journal" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
  <span class="menu-text">Journal</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-journal">    
-        <li>
-    <a class="dropdown-item" href="../../content/01_journal/01_tidyverse.html">
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-journal">
+<li>
+    <a class="dropdown-item" href="../../content/01_journal/01_tidyverse.html" rel="" target="">
  <span class="dropdown-text">01 Tidyverse</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../content/01_journal/02_data_acquisition.html">
+    <a class="dropdown-item" href="../../content/01_journal/02_data_acquisition.html" rel="" target="">
  <span class="dropdown-text">02 Data Acquisition</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../content/01_journal/03_data_wrangling.html">
+    <a class="dropdown-item" href="../../content/01_journal/03_data_wrangling.html" rel="" target="">
  <span class="dropdown-text">03 Data Wrangling</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../content/01_journal/04_data_visualization.html">
+    <a class="dropdown-item" href="../../content/01_journal/04_data_visualization.html" rel="" target="">
  <span class="dropdown-text">04 Data Visualization</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item">
-    <a class="nav-link" href="../../content/02_notes/05_class_notes.html">
+    <a class="nav-link" href="../../content/02_notes/05_class_notes.html" rel="" target="">
  <span class="menu-text">Class notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../content/03_other/06_links.html">
+    <a class="nav-link" href="../../content/03_other/06_links.html" rel="" target="">
  <span class="menu-text">Links</span></a>
   </li>  
 </ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-              </div>
-              <div id="quarto-search" class="" title="Search"></div>
+<div class="quarto-navbar-tools ms-auto">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Contents</h2>
+   
+  <ul class="collapse">
+<li><a href="#challenge-1" id="toc-challenge-1" class="nav-link active" data-scroll-target="#challenge-1"><span class="header-section-number">1</span> Challenge 1</a></li>
+  <li><a href="#challenge-2" id="toc-challenge-2" class="nav-link" data-scroll-target="#challenge-2"><span class="header-section-number">2</span> Challenge 2</a></li>
+  <li><a href="#challenge-3" id="toc-challenge-3" class="nav-link" data-scroll-target="#challenge-3"><span class="header-section-number">3</span> Challenge 3</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Data Wrangling</h1>
 </div>
 
@@ -148,7 +174,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Joschka Schwarz </p>
+             <p>Drew Gilmore </p>
           </div>
   </div>
     
@@ -157,26 +183,279 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
-</header>
+</header><section id="challenge-1" class="level1" data-number="1"><h1 data-number="1">
+<span class="header-section-number">1</span> Challenge 1</h1>
+<p>Alternative 2 [reduced data]</p>
+<div class="cell" data-hash="03_data_wrangling_cache/html/plot_5022c255f759252de70dd79a2440fe33">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Challenge 1 ----</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(vroom)</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a>col_types <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb1-10"><a href="#cb1-10"></a>  <span class="at">id =</span> <span class="fu">col_character</span>(),</span>
+<span id="cb1-11"><a href="#cb1-11"></a>  <span class="at">type =</span> <span class="fu">col_character</span>(),</span>
+<span id="cb1-12"><a href="#cb1-12"></a>  <span class="at">number =</span> <span class="fu">col_character</span>(),</span>
+<span id="cb1-13"><a href="#cb1-13"></a>  <span class="at">country =</span> <span class="fu">col_character</span>(),</span>
+<span id="cb1-14"><a href="#cb1-14"></a>  <span class="at">date =</span> <span class="fu">col_date</span>(<span class="st">"%Y-%m-%d"</span>),</span>
+<span id="cb1-15"><a href="#cb1-15"></a>  <span class="at">abstract =</span> <span class="fu">col_character</span>(),</span>
+<span id="cb1-16"><a href="#cb1-16"></a>  <span class="at">title =</span> <span class="fu">col_character</span>(),</span>
+<span id="cb1-17"><a href="#cb1-17"></a>  <span class="at">kind =</span> <span class="fu">col_character</span>(),</span>
+<span id="cb1-18"><a href="#cb1-18"></a>  <span class="at">num_claims =</span> <span class="fu">col_double</span>(),</span>
+<span id="cb1-19"><a href="#cb1-19"></a>  <span class="at">filename =</span> <span class="fu">col_character</span>(),</span>
+<span id="cb1-20"><a href="#cb1-20"></a>  <span class="at">withdrawn =</span> <span class="fu">col_double</span>(),</span>
+<span id="cb1-21"><a href="#cb1-21"></a>  <span class="at">patent_id =</span> <span class="fu">col_character</span>(),</span>
+<span id="cb1-22"><a href="#cb1-22"></a>  <span class="at">assignee_id =</span> <span class="fu">col_character</span>()</span>
+<span id="cb1-23"><a href="#cb1-23"></a>  </span>
+<span id="cb1-24"><a href="#cb1-24"></a>)</span>
+<span id="cb1-25"><a href="#cb1-25"></a></span>
+<span id="cb1-26"><a href="#cb1-26"></a>patent_data <span class="ot">&lt;-</span> <span class="fu">vroom</span>(</span>
+<span id="cb1-27"><a href="#cb1-27"></a>  <span class="at">file       =</span> <span class="fu">here</span>(<span class="st">"03_data_wrangling/Patent_data_reduced/patent.tsv"</span>), </span>
+<span id="cb1-28"><a href="#cb1-28"></a>  <span class="at">delim      =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, </span>
+<span id="cb1-29"><a href="#cb1-29"></a>  <span class="at">col_types  =</span> col_types,</span>
+<span id="cb1-30"><a href="#cb1-30"></a>  <span class="at">na         =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"NA"</span>, <span class="st">"NULL"</span>)</span>
+<span id="cb1-31"><a href="#cb1-31"></a>)</span>
+<span id="cb1-32"><a href="#cb1-32"></a></span>
+<span id="cb1-33"><a href="#cb1-33"></a>assignee_data <span class="ot">&lt;-</span> <span class="fu">vroom</span>(</span>
+<span id="cb1-34"><a href="#cb1-34"></a>  <span class="at">file       =</span> <span class="fu">here</span>(<span class="st">"03_data_wrangling/Patent_data_reduced/assignee.tsv"</span>), </span>
+<span id="cb1-35"><a href="#cb1-35"></a>  <span class="at">delim      =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, </span>
+<span id="cb1-36"><a href="#cb1-36"></a>  <span class="at">col_types  =</span> col_types,</span>
+<span id="cb1-37"><a href="#cb1-37"></a>  <span class="at">na         =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"NA"</span>, <span class="st">"NULL"</span>)</span>
+<span id="cb1-38"><a href="#cb1-38"></a>)</span>
+<span id="cb1-39"><a href="#cb1-39"></a></span>
+<span id="cb1-40"><a href="#cb1-40"></a>patent_assignee_data <span class="ot">&lt;-</span> <span class="fu">vroom</span>(</span>
+<span id="cb1-41"><a href="#cb1-41"></a>  <span class="at">file       =</span> <span class="fu">here</span>(<span class="st">"03_data_wrangling/Patent_data_reduced/patent_assignee.tsv"</span>), </span>
+<span id="cb1-42"><a href="#cb1-42"></a>  <span class="at">delim      =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, </span>
+<span id="cb1-43"><a href="#cb1-43"></a>  <span class="at">col_types  =</span> col_types,</span>
+<span id="cb1-44"><a href="#cb1-44"></a>  <span class="at">na         =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"NA"</span>, <span class="st">"NULL"</span>)</span>
+<span id="cb1-45"><a href="#cb1-45"></a>)</span>
+<span id="cb1-46"><a href="#cb1-46"></a></span>
+<span id="cb1-47"><a href="#cb1-47"></a>uspc_data <span class="ot">&lt;-</span> <span class="fu">vroom</span>(</span>
+<span id="cb1-48"><a href="#cb1-48"></a>  <span class="at">file       =</span> <span class="fu">here</span>(<span class="st">"03_data_wrangling/Patent_data_reduced/uspc.tsv"</span>), </span>
+<span id="cb1-49"><a href="#cb1-49"></a>  <span class="at">delim      =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, </span>
+<span id="cb1-50"><a href="#cb1-50"></a>  <span class="at">col_types  =</span> col_types,</span>
+<span id="cb1-51"><a href="#cb1-51"></a>  <span class="at">na         =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"NA"</span>, <span class="st">"NULL"</span>)</span>
+<span id="cb1-52"><a href="#cb1-52"></a>)</span>
+<span id="cb1-53"><a href="#cb1-53"></a></span>
+<span id="cb1-54"><a href="#cb1-54"></a>patent_tbl <span class="ot">&lt;-</span> <span class="fu">setDT</span>(patent_data)</span>
+<span id="cb1-55"><a href="#cb1-55"></a>assignee_tbl <span class="ot">&lt;-</span> <span class="fu">setDT</span>(assignee_data)</span>
+<span id="cb1-56"><a href="#cb1-56"></a>patent_assignee_tbl <span class="ot">&lt;-</span> <span class="fu">setDT</span>(patent_assignee_data)</span>
+<span id="cb1-57"><a href="#cb1-57"></a>uspc_tbl <span class="ot">&lt;-</span> <span class="fu">setDT</span>(uspc_data)</span>
+<span id="cb1-58"><a href="#cb1-58"></a></span>
+<span id="cb1-59"><a href="#cb1-59"></a><span class="co">#change column names to distinguish data</span></span>
+<span id="cb1-60"><a href="#cb1-60"></a></span>
+<span id="cb1-61"><a href="#cb1-61"></a><span class="fu">setnames</span>(patent_tbl, <span class="st">"id"</span>, <span class="st">"patent_id"</span>)</span>
+<span id="cb1-62"><a href="#cb1-62"></a><span class="fu">setnames</span>(assignee_tbl, <span class="st">"id"</span>, <span class="st">"assignee_id"</span>)</span>
+<span id="cb1-63"><a href="#cb1-63"></a></span>
+<span id="cb1-64"><a href="#cb1-64"></a><span class="co">#merge data</span></span>
+<span id="cb1-65"><a href="#cb1-65"></a>patents_orgs_tbl <span class="ot">&lt;-</span> <span class="fu">merge</span>(patent_assignee_tbl, assignee_tbl, <span class="at">by=</span><span class="st">'assignee_id'</span>, <span class="at">all =</span> T)</span>
+<span id="cb1-66"><a href="#cb1-66"></a></span>
+<span id="cb1-67"><a href="#cb1-67"></a><span class="co">#sort based on assignee type</span></span>
+<span id="cb1-68"><a href="#cb1-68"></a><span class="co">#retrieve the number of rows that each organization appears in the table</span></span>
+<span id="cb1-69"><a href="#cb1-69"></a>num_patents <span class="ot">&lt;-</span> patents_orgs_tbl[type <span class="sc">==</span> <span class="st">"2"</span>, .N, by <span class="ot">=</span> organization]</span>
+<span id="cb1-70"><a href="#cb1-70"></a></span>
+<span id="cb1-71"><a href="#cb1-71"></a><span class="co">#sort descending number of patents</span></span>
+<span id="cb1-72"><a href="#cb1-72"></a>num_patents <span class="ot">&lt;-</span> num_patents[<span class="fu">order</span>(<span class="sc">-</span><span class="fu">rank</span>(N))]</span>
+<span id="cb1-73"><a href="#cb1-73"></a></span>
+<span id="cb1-74"><a href="#cb1-74"></a><span class="fu">setnames</span>(num_patents, <span class="st">"N"</span>, <span class="st">"number of patents"</span>)</span>
+<span id="cb1-75"><a href="#cb1-75"></a></span>
+<span id="cb1-76"><a href="#cb1-76"></a><span class="fu">kable</span>(<span class="fu">head</span>(num_patents, <span class="at">n =</span> <span class="dv">10</span>), <span class="at">caption =</span> <span class="st">"Top 10 US Companies With The Most New Granted Patents For 2014"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Top 10 US Companies With The Most New Granted Patents For 2014</caption>
+<thead><tr class="header">
+<th style="text-align: left;">organization</th>
+<th style="text-align: right;">number of patents</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">International Business Machines Corporation</td>
+<td style="text-align: right;">7547</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Microsoft Corporation</td>
+<td style="text-align: right;">3165</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Google Inc.</td>
+<td style="text-align: right;">2668</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">QUALCOMM Incorporated</td>
+<td style="text-align: right;">2597</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Apple Inc.</td>
+<td style="text-align: right;">2201</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">General Electric Company</td>
+<td style="text-align: right;">1873</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hewlett-Packard Development Company, L.P.</td>
+<td style="text-align: right;">1638</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AT&amp;T INTELLECTUAL PROPERTY I, L.P.</td>
+<td style="text-align: right;">1625</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Intel Corporation</td>
+<td style="text-align: right;">1616</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GM Global Technology Operations LLC</td>
+<td style="text-align: right;">1533</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="challenge-2" class="level1" data-number="2"><h1 data-number="2">
+<span class="header-section-number">2</span> Challenge 2</h1>
+<p>Alternative 2 [reduced data]</p>
+<div class="cell" data-hash="03_data_wrangling_cache/html/plot2_a102d917f4c431beb26377bbc4ffc674">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Challenge 2 ----</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co">#merge data</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>patents_orgs_tbl_2 <span class="ot">&lt;-</span> <span class="fu">merge</span>(patents_orgs_tbl, patent_tbl, <span class="at">by=</span><span class="st">'patent_id'</span>, <span class="at">all =</span> T)</span>
+<span id="cb2-5"><a href="#cb2-5"></a></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#filter based on US companies</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>num_patents_aug <span class="ot">&lt;-</span> patents_orgs_tbl_2[type <span class="sc">==</span> <span class="st">"2"</span> <span class="sc">&amp;</span> lubridate<span class="sc">::</span><span class="fu">month</span>(date) <span class="sc">==</span> <span class="st">"8"</span>, .N, by <span class="ot">=</span> organization]</span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co">#sort</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>num_patents_aug <span class="ot">&lt;-</span> num_patents_aug[<span class="fu">order</span>(<span class="sc">-</span><span class="fu">rank</span>(N))]</span>
+<span id="cb2-11"><a href="#cb2-11"></a></span>
+<span id="cb2-12"><a href="#cb2-12"></a></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="fu">setnames</span>(num_patents_aug, <span class="st">"N"</span>, <span class="st">"number of patents (Aug, 2014)"</span>)</span>
+<span id="cb2-14"><a href="#cb2-14"></a></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="fu">kable</span>(<span class="fu">head</span>(num_patents_aug, <span class="at">n =</span> <span class="dv">10</span>), <span class="at">caption =</span> <span class="st">"Top 10 US Companies With The Most New Granted Patents For August 2014"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Top 10 US Companies With The Most New Granted Patents For August 2014</caption>
+<colgroup>
+<col style="width: 59%">
+<col style="width: 40%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">organization</th>
+<th style="text-align: right;">number of patents (Aug, 2014)</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">International Business Machines Corporation</td>
+<td style="text-align: right;">718</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Microsoft Corporation</td>
+<td style="text-align: right;">337</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Google Inc.</td>
+<td style="text-align: right;">240</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">QUALCOMM Incorporated</td>
+<td style="text-align: right;">223</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Apple Inc.</td>
+<td style="text-align: right;">222</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Intel Corporation</td>
+<td style="text-align: right;">159</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">General Electric Company</td>
+<td style="text-align: right;">148</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AT&amp;T INTELLECTUAL PROPERTY I, L.P.</td>
+<td style="text-align: right;">146</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hewlett-Packard Development Company, L.P.</td>
+<td style="text-align: right;">140</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GM Global Technology Operations LLC</td>
+<td style="text-align: right;">138</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="challenge-3" class="level1" data-number="3"><h1 data-number="3">
+<span class="header-section-number">3</span> Challenge 3</h1>
+<p>Alternative 2 [reduced data]</p>
+<div class="cell" data-hash="03_data_wrangling_cache/html/plot3_567b0f96ce370a4b5e74171209728236">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Challenge 3 ----</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#join data</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>patents_orgs_tbl_3 <span class="ot">&lt;-</span> <span class="fu">merge</span>(patents_orgs_tbl_2, uspc_tbl, <span class="at">by=</span><span class="st">'patent_id'</span>, <span class="at">all =</span> T)</span>
+<span id="cb3-6"><a href="#cb3-6"></a></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="co">#sort by worldwide companies and number of patents</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>patents_orgs_tbl_4 <span class="ot">&lt;-</span> patents_orgs_tbl_3[type <span class="sc">==</span> <span class="st">"2"</span> <span class="sc">|</span> type <span class="sc">==</span> <span class="st">"3"</span>, .N, by<span class="ot">=</span>organization]</span>
+<span id="cb3-9"><a href="#cb3-9"></a></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="co">#sort descending</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>patents_orgs_tbl_5 <span class="ot">&lt;-</span> patents_orgs_tbl_4[<span class="fu">order</span>(<span class="sc">-</span><span class="fu">rank</span>(N))]</span>
+<span id="cb3-12"><a href="#cb3-12"></a></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="co">#top 10</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>patents_orgs_tbl_6 <span class="ot">&lt;-</span> <span class="fu">head</span>(patents_orgs_tbl_5, <span class="at">n =</span> <span class="dv">10</span>)</span>
+<span id="cb3-15"><a href="#cb3-15"></a></span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="co">#create variable of names to filter by</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a>top_ten <span class="ot">&lt;-</span> patents_orgs_tbl_6[,organization]</span>
+<span id="cb3-18"><a href="#cb3-18"></a></span>
+<span id="cb3-19"><a href="#cb3-19"></a><span class="co">#filter by names and exclude NA</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a>patents_orgs_tbl_7 <span class="ot">&lt;-</span> patents_orgs_tbl_3[organization <span class="sc">%in%</span> <span class="fu">c</span>(top_ten) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(mainclass_id), .N, by <span class="ot">=</span> mainclass_id]</span>
+<span id="cb3-21"><a href="#cb3-21"></a></span>
+<span id="cb3-22"><a href="#cb3-22"></a><span class="co">#sort</span></span>
+<span id="cb3-23"><a href="#cb3-23"></a>patents_orgs_tbl_8 <span class="ot">&lt;-</span> patents_orgs_tbl_7[<span class="fu">order</span>(<span class="sc">-</span><span class="fu">rank</span>(N))]</span>
+<span id="cb3-24"><a href="#cb3-24"></a></span>
+<span id="cb3-25"><a href="#cb3-25"></a><span class="fu">setnames</span>(patents_orgs_tbl_8, <span class="st">"N"</span>, <span class="st">"number of patents (2014)"</span>)</span>
+<span id="cb3-26"><a href="#cb3-26"></a></span>
+<span id="cb3-27"><a href="#cb3-27"></a><span class="fu">kable</span>(<span class="fu">head</span>(patents_orgs_tbl_8, <span class="at">n =</span> <span class="dv">5</span>), <span class="at">caption =</span> <span class="st">"Top 5 USPTO Tech Main Classes (excluding NA) of the Top 10 Worldwide Companies With the Most New Granted Patents for August 2014"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Top 5 USPTO Tech Main Classes (excluding NA) of the Top 10 Worldwide Companies With the Most New Granted Patents for August 2014</caption>
+<thead><tr class="header">
+<th style="text-align: right;">mainclass_id</th>
+<th style="text-align: right;">number of patents (2014)</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">257</td>
+<td style="text-align: right;">7979</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">455</td>
+<td style="text-align: right;">6191</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">370</td>
+<td style="text-align: right;">5483</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">348</td>
+<td style="text-align: right;">4113</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">709</td>
+<td style="text-align: right;">4018</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 
-<div class="callout-note callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>You can delete everything in here and start fresh.</p>
-</div>
-</div>
 
-
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -318,9 +597,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -385,6 +678,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {

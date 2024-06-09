@@ -1,8 +1,95 @@
 ---
 title: "Data Visualization"
-author: "Joschka Schwarz"
+author: "Drew Gilmore"
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
-:::
+# Challenge 1
+```{r, echo = T , warning=FALSE, error=FALSE, message=FALSE}
+library(tidyverse)
+library(lubridate)
+library(here)
+library(scales)
+
+
+library(tidyverse)
+covid_data_tbl <- read_csv("https://covid.ourworldindata.org/data/owid-covid-data.csv")
+
+#create location vector
+location_levels <- c(
+  "Germany", "Spain", "France", 
+  "United Kingdom", "United States")
+
+#filter by locations
+covid_data_tbl_2 <- covid_data_tbl %>%
+ filter(location %in% location_levels) 
+
+#determine max number of cases in USA to display
+max_cases_us <- covid_data_tbl_2 %>%
+  filter(location == "United States") %>%
+  arrange(desc(total_cases)) %>%
+  head(n = 1)
+
+
+plot_cases_by_country <- covid_data_tbl_2 %>% 
+  ggplot(aes(date, total_cases, color = location)) +
+  geom_smooth(method = "loess", span = 0.2, se = FALSE) +
+  scale_x_date(name = NULL, date_breaks = "1 year", date_labels = "%Y") +
+  scale_y_continuous(name = "Cumulative Cases", labels = comma) +
+  scale_color_brewer(palette = "YlOrBr") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  labs(color = "Country", title = "Cumulative COVID-19 Cases Over Time",
+       subtitle = "Data for Germany, Spain, France, United Kingdom, and United States") +
+  geom_label(data = max_cases_us, label = "103,436,829", show.legend = FALSE, vjust = -.1)
+
+plot(plot_cases_by_country)
+
+```
+
+# Challenge 2
+```{r plot, echo = T , warning=FALSE, error=FALSE, message=FALSE}
+
+library(tidyverse)
+library(maps)
+
+# Read data
+covid_data_tbl <- read_csv("https://covid.ourworldindata.org/data/owid-covid-data.csv")
+
+# Data manipulation
+covid_data_tbl_3 <- covid_data_tbl %>% 
+  filter(!is.na(continent)) %>% #filter to only include countries
+  group_by(location) %>%
+  summarize(mortality_rate = max((total_deaths / population), na.rm = TRUE)) %>% #calculate mortality rate
+  ungroup() %>%
+  mutate(location = case_when(
+    location == "United Kingdom" ~ "UK",
+    location == "United States" ~ "USA",
+    location == "Democratic Republic of Congo" ~ "Democratic Republic of the Congo",
+    TRUE ~ location
+  )) %>%
+  distinct()
+
+# World map data
+world <- map_data("world")
+
+# Merge data, re-order column names
+World_covid <- merge(covid_data_tbl_3, world, by.x = "location", by.y = "region", all.x = TRUE) %>%
+  select(long, lat, group, order, location, subregion, mortality_rate) %>%
+  arrange(order)
+
+# adjusting column names
+colnames(World_covid) <- c("long", "lat", "group", "order", "id", "subregion", "mortality_rate")
+
+# Plotting
+gg <- ggplot(World_covid)
+gg <- gg + geom_map(data = world, map = world, aes(map_id = region), 
+                    fill = "white", color = "#7f7f7f", size = 0.25)
+gg <- gg + geom_map(map = World_covid, aes(map_id = id, fill = mortality_rate), size = 0.25)
+gg <- gg + scale_fill_gradient(low = "red", high = "black", name = "Mortality Rate")
+gg <- gg + expand_limits(x = World_covid$long, y = World_covid$lat)
+gg <- gg + labs(x = "", y = "", title = "Covid Mortality Rate by country")
+gg <- gg + theme(panel.grid = element_blank(), panel.border = element_blank())
+gg <- gg + theme(axis.ticks = element_blank(), axis.text = element_blank())
+gg <- gg + theme(legend.position = "bottom")
+gg
+```
